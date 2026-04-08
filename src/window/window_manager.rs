@@ -1,6 +1,8 @@
 use minifb::{Window, WindowOptions};
 use std::sync::{OnceLock, Mutex, MutexGuard};
 
+use crate::{renderer::draw::Draw, vector_math::vector2d::Vector2d};
+
 enum WindowType{
     windowed,
     borderless,
@@ -57,18 +59,24 @@ impl WindowManager{
         WindowOptions::default(),
     ).unwrap();
 
-    WindowManager::update_pixel(&mut buffer, 80, 30, 0x000000FF);
+    let mut colour = 0x000000FF;
+
+    let start = Vector2d::new(80.0, 100.0);
+    let end = Vector2d::new(60.0, 150.0);
+
+    WindowManager::update_pixel(&mut buffer, 80, 30, &mut colour);
+    Draw::draw_line(&start, &end, &mut buffer, &mut colour);
     while window.is_open() {
         window.update_with_buffer(&buffer, window_instance.width, window_instance.height).unwrap();
     }
     }
 
-    fn get_window_height() -> usize{
-        return 600;
+    fn get_window_width() -> usize{
+        return 480;
     }
 
-    fn get_window_width() -> usize{
-        return 800;
+    fn get_window_height() -> usize{
+        return 320;
     }
 
     fn get_window_type() -> WindowType{
@@ -80,7 +88,7 @@ impl WindowManager{
         return buffer;
     }
 
-    fn update_pixel(buffer: &mut Vec<u32>, x: usize, y: usize, colour: u32){
-    buffer[y * WindowManager::get_window_width() + x] = colour;
+    pub fn update_pixel(buffer: &mut Vec<u32>, x: usize, y: usize, colour: &mut u32){
+    buffer[y * WindowManager::get_window_width() + x] = *colour;
 }
 }

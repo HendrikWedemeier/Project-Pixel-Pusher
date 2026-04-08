@@ -1,18 +1,42 @@
 pub struct Vector2d {
-    x: i32,
-    y: i32
+    pub(crate) x: f64,
+    pub(crate) y: f64
 }
 
 impl Vector2d{
-    fn new(x: i32, y: i32) -> Self{
+    pub fn new(x: f64, y: f64) -> Self{
         Self { x, y }
     }
 
-    fn mult(vector:&mut Vector2d, lamda: f64) -> Vector2d{
+    pub fn add(v_a: &Vector2d, v_b: &Vector2d) -> Vector2d{
         return Vector2d::new
         (
-            (vector.x as f64 * lamda) as i32,
-            (vector.y as f64 * lamda) as i32
+            v_a.x + v_b.x,
+            v_a.y + v_b.y
         );
+    }
+
+    pub fn sub(v_a: &Vector2d, v_b: &Vector2d) -> Vector2d{
+        return Vector2d::new
+        (
+            v_a.x - v_b.x,
+            v_a.y - v_b.y
+        );
+    }
+
+    pub fn mult(vector: &Vector2d, lamda: f64) -> Vector2d{
+        return Vector2d::new
+        (
+            vector.x * lamda,
+            vector.y * lamda
+        );
+    }
+
+    //TODO: Fast approximate squere root
+
+    pub fn get_length(start_point: &Vector2d, end_point: &Vector2d) -> f64{
+
+        let x = f64::powf(end_point.x - start_point.x, 2.0) + f64::powf(end_point.y - start_point.y, 2.0 );
+        return f64::sqrt(x);
     }
 }
